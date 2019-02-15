@@ -1,0 +1,53 @@
+openapi: "3.0.0"
+info:
+  title: "REST documentation for ManBearPig's Library"
+  description: |-
+    Developer specification for the different end points for ManBearPig's Library.
+    This documentation is intended to guide the developer in the usage and integration
+    of the differen end points for the given service.
+  version: "1.0"
+  contact:
+    name: ManBearPig
+    email: the@manbearpig.io
+servers:
+  - url: https://dev.manbearpig.io
+paths:
+  /api/v1/books:
+    post:
+      summary: Create a new book
+      description: |-
+        Create a new book using the defined request payload. Any given book is considered unique
+        using the ISBN attribute.
+      tags:
+        - Books
+      requestBody:
+        description: Request payload when creating the book
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'books.oas3.yml#/components/schemas/NewBook'
+            examples:
+              'Valid Payload':
+                summary: Valid Payload
+                value:
+                  data:
+                    title: Golang For Newbies
+                    author_id: 123456789
+                    ISBN: 123456789
+              'Invalid Payload':
+                summary: Invalid Payload
+                value:
+                  data:
+                    title:
+                    author_id:
+                    ISBN:
+      responses:
+        '404':
+          $ref: 'common.oas3.yml#/components/responses/RecordNotFound'
+        '422':
+          $ref: 'common.oas3.yml#/components/responses/ValidationErrors'
+        '500':
+          $ref: 'common.oas3.yml#/components/responses/InternalServerError'
+        '201':
+          $ref: 'books.oas3.yml#/components/responses/BookCreated'

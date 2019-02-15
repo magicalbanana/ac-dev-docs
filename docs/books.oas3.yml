@@ -1,0 +1,44 @@
+components:
+  schemas:
+    NewBook:
+      $ref: '#/components/schemas/Book'
+    Book:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            title:
+              description: Title of the book
+              type: string
+            isbn:
+              description: International identifier of the book.
+              type: string
+            author_id:
+              description: |-
+                ID of the author from the author's list end point. If an author does not
+                exist, the caller MUST create the author and use the ID generated from the new
+                record as the value here
+              type: string
+          required:
+            - title
+            - isbn
+            - author_id
+      required:
+        - data
+  responses:
+    BookCreated:
+      description: Successfully persist a book to the library
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Book'
+          examples:
+            'crud.record_created':
+              value:
+                code: crud.recrd_created
+                message: Record created
+                data:
+                  title: Golang For Beginners
+                  isbn: 123456789
+                  author_id: 123456789
